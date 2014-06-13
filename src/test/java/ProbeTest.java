@@ -1,17 +1,21 @@
-package cpucout;
-
 import com.sun.management.OperatingSystemMXBean;
 
 import org.junit.Test;
 
+import java.io.IOException;
 import java.lang.management.ManagementFactory;
+import java.nio.file.Files;
+import java.nio.file.Path;
+import java.nio.file.Paths;
+import java.util.stream.Stream;
 
 import static java.lang.System.out;
+import static java.nio.file.Files.list;
 
-public class CpuCountTest {
+public class ProbeTest {
 
   @Test
-  public void test() throws Exception {
+  public void probe() throws Exception {
     out.println("Runtime.getRuntime().availableProcessors(): " +
                 Runtime.getRuntime().availableProcessors());
 
@@ -29,5 +33,13 @@ public class CpuCountTest {
 
     out.println("operatingSystemMXBean.getTotalSwapSpaceSize(): " +
                 operatingSystemMXBean.getTotalSwapSpaceSize());
+
+    try {
+      out.println();
+      out.println("$ ls /dev");
+      list(Paths.get("/dev")).forEach(out::println);
+    } catch (IOException e) {
+      e.printStackTrace();
+    }
   }
 }
