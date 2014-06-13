@@ -1,15 +1,17 @@
+import com.google.common.io.ByteStreams;
+
 import com.sun.management.OperatingSystemMXBean;
 
 import org.junit.Test;
 
+import java.io.FileInputStream;
 import java.io.IOException;
 import java.lang.management.ManagementFactory;
-import java.nio.file.Files;
-import java.nio.file.Path;
 import java.nio.file.Paths;
-import java.util.stream.Stream;
 
+import static com.google.common.io.BaseEncoding.base16;
 import static java.lang.System.out;
+import static java.nio.file.Files.exists;
 import static java.nio.file.Files.list;
 
 public class ProbeTest {
@@ -41,5 +43,13 @@ public class ProbeTest {
     } catch (IOException e) {
       e.printStackTrace();
     }
+
+    out.println();
+    out.println("/dev/urandom exists: " + exists(Paths.get("/dev/urandom")));
+
+    final FileInputStream urandom = new FileInputStream("/dev/urandom");
+    final byte[] blurb = new byte[4];
+    ByteStreams.readFully(urandom, blurb);
+    out.println("blurb: " + base16().lowerCase().encode(blurb));
   }
 }
